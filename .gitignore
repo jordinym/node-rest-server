@@ -1,0 +1,14 @@
+node_modules/
+
+# dotenv environment variables file
+.env
+.env.test
+.env*.local
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
