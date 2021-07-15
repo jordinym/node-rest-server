@@ -1,21 +1,32 @@
+const User = require("../models/user");
+
 const userGet = (req, res) => {
-  const {name='default',limit="10",page="1"}=req.query; 
-  res.status(200).json(
-    { 
-      msg: "Hello World! - GET",
-      name,
-      limit,
-      page,
-   });
+  const { name = "default", limit = "10", page = "1" } = req.query;
+  res.status(200).json({
+    msg: "Hello World! - GET",
+    name,
+    limit,
+    page,
+  });
 };
 
-const userPost = (req, res) => {
+const userPost = async (req, res) => {
   const body = req.body;
 
-  res.status(200).json({
-    msg: "Hello World! - POST",
-    body,
-  });
+  try {
+    const userDb = new User(body);
+    await userDb.save();
+
+    res.status(200).json({
+      msg: "Hello World! - POST",
+      userDb,
+    });
+    
+  } catch (error) {
+    console.log(error);
+  }
+
+  
 };
 
 const userPut = (req, res) => {
@@ -28,12 +39,11 @@ const userPut = (req, res) => {
 };
 
 const userDelete = (req, res) => {
-  const  id = req.params.id;
-  res.status(200).json(
-    { 
-      msg: "Hello World! - DELETE" ,
-      id
-    });
+  const id = req.params.id;
+  res.status(200).json({
+    msg: "Hello World! - DELETE",
+    id,
+  });
 };
 
 module.exports = {
