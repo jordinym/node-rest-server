@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors')
 
 class Server {
   constructor() {
@@ -12,12 +13,15 @@ class Server {
   middelware() {
     //Public directory
     this.app.use(express.static("public"));
+
+    //CORS
+    this.app.use(cors());
   }
 
   routes() {
-    this.app.get("/api", (req, res) => {
-      res.send("Hello World!");
-    });
+    //USER Route
+    this.app.use('/api/users',require('../routes/users.route'));
+
   }
 
   listen() {
