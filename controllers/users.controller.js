@@ -1,22 +1,44 @@
 const userGet = (req, res) => {
-  res.status(200).json({ msg: "Hello World! - GET" });
+  const {name='default',limit="10",page="1"}=req.query; 
+  res.status(200).json(
+    { 
+      msg: "Hello World! - GET",
+      name,
+      limit,
+      page,
+   });
 };
 
 const userPost = (req, res) => {
-  res.status(200).json({ msg: "Hello World! - POST" });
+  const body = req.body;
+
+  res.status(200).json({
+    msg: "Hello World! - POST",
+    body,
+  });
 };
 
 const userPut = (req, res) => {
-  res.status(200).json({ msg: "Hello World! - PUT" });
+  const id = req.params.id;
+
+  res.status(200).json({
+    msg: "Hello World! - PUT",
+    id,
+  });
 };
 
 const userDelete = (req, res) => {
-  res.status(200).json({ msg: "Hello World! - DELETE" });
+  const  id = req.params.id;
+  res.status(200).json(
+    { 
+      msg: "Hello World! - DELETE" ,
+      id
+    });
 };
 
 module.exports = {
   userGet,
   userPost,
   userPut,
-  userDelete
+  userDelete,
 };

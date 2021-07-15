@@ -11,11 +11,17 @@ class Server {
   }
 
   middelware() {
-    //Public directory
-    this.app.use(express.static("public"));
 
     //CORS
     this.app.use(cors());
+
+    //Middleware para leer y parsear el body del request
+    this.app.use(express.json()) // for parsing application/json
+    this.app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
+    //Public directory
+    this.app.use(express.static("public"));
+
   }
 
   routes() {

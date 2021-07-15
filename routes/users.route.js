@@ -13,8 +13,9 @@ router.get("/", userGet);
 
 router.post("/", userPost);
 
-router.put("/", userPut);
+//parametros de segmento
+router.put("/:id", userPut);
 
-router.delete("/", userDelete);
+router.delete("/:id", userDelete);
 
 module.exports = router;
