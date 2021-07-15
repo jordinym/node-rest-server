@@ -1,19 +1,15 @@
 require('dotenv').config();
 
-const express = require("express");
+const Server = require('./models/server');
 
-const app = express();
-const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World !!");
-});
-
+const server= new Server();
+ 
 //midelware 404
-app.use((req, res) => {
+server.app.use((req, res) => {
   res.status(404).send("Error 404");
 });
 
-app.listen(port, () => {
-  console.log("servidor a su servicio en el puerto", port);
-});
+server.listen();
+
+
