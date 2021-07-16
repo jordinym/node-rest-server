@@ -15,6 +15,7 @@ const isExistsEmail = async (email='') => {
       throw new Error(`The Email ${email}  already exists in database`);
     }
 };
+
 const isExistsUserById = async (id='') => {
   //Validate unique email
    const existsUser = await User.findById(id); 
