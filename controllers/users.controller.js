@@ -80,12 +80,24 @@ const userPut = async (req, res) => {
   }
 };
 
-const userDelete = (req, res) => {
-  const id = req.params.id;
-  res.status(200).json({
-    msg: "Hello World! - DELETE",
-    id,
-  });
+const userDelete = async (req, res) => {
+  const { id } = req.params;  
+  try {
+
+    //remove user physically
+    //const userDb = await User.findByIdAndDelete(id);
+
+    //remove user logically
+    const userDb= await User.findByIdAndUpdate(id,{status:false});
+
+    res.status(200).json({
+      msg: "success",
+      data: userDb,
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = {

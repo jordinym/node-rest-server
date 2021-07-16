@@ -27,12 +27,16 @@ router.post("/",[
 
 //Segment parameters
 router.put("/:id",[
-  check('id', 'The Id no is valid').isMongoId(), 
+  check('id', 'The Id is not valid').isMongoId(), 
   check('id').custom(isExistsUserById),
   check('role').custom(isValidRole),
   validateFields //custom middlewares
 ], userPut);
 
-router.delete("/:id", userDelete);
+router.delete("/:id",[
+  check('id', 'The Id is not valid').isMongoId(), 
+  check('id').custom(isExistsUserById),
+  validateFields //custom middlewares
+], userDelete);
 
 module.exports = router;
