@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
 const userGet = (req, res) => {
@@ -11,22 +12,24 @@ const userGet = (req, res) => {
 };
 
 const userPost = async (req, res) => {
-  const body = req.body;
+  const { name, email, password, role } = req.body;
+  const userDb = new User({ name, email, password, role });
+  //Verificar si el correo se repite
 
   try {
-    const userDb = new User(body);
+    // Encriptar la contraseña
+    const sal = bcrypt.genSaltSync();
+    userDb.password = bcrypt.hashSync(password, sal);
+
     await userDb.save();
 
     res.status(200).json({
       msg: "Hello World! - POST",
       userDb,
     });
-    
   } catch (error) {
     console.log(error);
   }
-
-  
 };
 
 const userPut = (req, res) => {
