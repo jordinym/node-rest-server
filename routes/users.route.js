@@ -8,7 +8,7 @@ const {
   userPut,
   userDelete,
 } = require("../controllers/users.controller");
-const { isValidRole, isExistsEmail } = require("../helpers/db-validators");
+const { isValidRole, isExistsEmail, isExistsUserById } = require("../helpers/db-validators");
 const { validateFields } = require("../middlewares/validate-fields");
 
 // no se ejecuta solo se pasa la referencia, para que el controlador lo ejecute
@@ -25,8 +25,13 @@ router.post("/",[
   validateFields //custom middlewares
 ], userPost);
 
-//parametros de segmento
-router.put("/:id", userPut);
+//Segment parameters
+router.put("/:id",[
+  check('id', 'The Id no is valid').isMongoId(), 
+  check('id').custom(isExistsUserById),
+  check('role').custom(isValidRole),
+  validateFields //custom middlewares
+], userPut);
 
 router.delete("/:id", userDelete);
 

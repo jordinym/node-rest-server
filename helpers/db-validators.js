@@ -1,5 +1,3 @@
-const { check, validationResult } = require("express-validator");
-const { validateFields } = require("../middlewares/validate-fields");
 const Role = require("../models/role");
 const User = require("../models/user");
 
@@ -17,8 +15,16 @@ const isExistsEmail = async (email='') => {
       throw new Error(`The Email ${email}  already exists in database`);
     }
 };
+const isExistsUserById = async (id='') => {
+  //Validate unique email
+   const existsUser = await User.findById(id); 
+     if (!existsUser) { 
+       throw new Error(`The Id ${id} not exists in database`);
+     }
+ };
 
 module.exports = {
   isValidRole,
-  isExistsEmail
+  isExistsEmail,
+  isExistsUserById
 };

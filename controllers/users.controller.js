@@ -17,7 +17,6 @@ const userPost = async (req, res) => {
   const userDb = new User({ name, email, password, role });
 
   try {
-    
     // Encrypt password
     const sal = bcrypt.genSaltSync();
     userDb.password = bcrypt.hashSync(password, sal);
@@ -28,19 +27,30 @@ const userPost = async (req, res) => {
       msg: "success",
       data: userDb,
     });
-    
   } catch (error) {
     console.log(error);
   }
 };
 
-const userPut = (req, res) => {
-  const id = req.params.id;
+const userPut = async (req, res) => {
+  const { id } = req.params;
+  const { _id,password, google, ...otherParams } = req.body;
 
-  res.status(200).json({
-    msg: "Hello World! - PUT",
-    id,
-  });
+  try {
+    //validar contra BD
+    if (password) {
+      // Encrypt password
+      const sal = bcrypt.genSaltSync();
+      otherParams.password = bcrypt.hashSync(password, sal);
+    }
+    const userDb = await User.findByIdAndUpdate(id, otherParams);
+    res.status(200).json({
+      msg: "success",
+      data: userDb,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const userDelete = (req, res) => {
