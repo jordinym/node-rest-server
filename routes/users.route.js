@@ -8,6 +8,7 @@ const {
   userPut,
   userDelete,
 } = require("../controllers/users.controller");
+const { validateFields } = require("../middlewares/validate-fields");
 
 // no se ejecuta solo se pasa la referencia, para que el controlador lo ejecute
 router.get("/", userGet);
@@ -17,7 +18,8 @@ router.post("/",[
   check('name', 'The name is required').notEmpty(),
   check('password', 'The password is required (minimum letters 6)').isLength({min:6}),
   check('email', 'Email is not valid').isEmail(),
-  check('roles', 'Role is not valid').isIn(["ADMIN_USER", "GUEST_USER"]),
+  check('role', 'Role is not valid').isIn(["ADMIN_USER", "GUEST_USER"]),
+  validateFields //custom middlewares
 ], userPost);
 
 //parametros de segmento
