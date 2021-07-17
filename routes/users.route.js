@@ -8,11 +8,14 @@ const {
   userPut,
   userDelete,
 } = require("../controllers/users.controller");
+
 const { isValidRole, isExistsEmail, isExistsUserById } = require("../helpers/db-validators");
 
-const { validateFields } = require("../middlewares/validate-fields");
-const { validateJWT } = require("../middlewares/validate-jwt");
-const { isRoleAdmin, hasRole } = require("../middlewares/validate-role");
+const {
+  validateFields, 
+  validateJWT,
+  isRoleAdmin,
+  hasRole}= require('../middlewares');//../middlewares/index -> The "index" is not put, because it is not necessary
 
 // no se ejecuta solo se pasa la referencia, para que el controlador lo ejecute
 router.get("/", userGet);
