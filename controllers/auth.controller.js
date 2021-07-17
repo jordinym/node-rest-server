@@ -12,14 +12,14 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.status(400).json({
-        msg: "The username/password are not correct - email", // - email only test case
+        msg: "The username/password are not correct - email", // - email :: only for tests
       });
     }
 
     //Verify if user is active
     if (!user.status) {
       return res.status(400).json({
-        msg: "The username/password are not correct - status",// - status only test case
+        msg: "The username/password are not correct - status",// - status :: only for tests
       });
     }
  
@@ -27,7 +27,7 @@ const login = async (req, res) => {
     const validPassword =  bcrypt.compareSync(password, user.password)
     if (!validPassword) {
       return res.status(400).json({
-        msg: "The username/password are not correct - password",// - password only test case
+        msg: "The username/password are not correct - password",// - password :: only for tests
       });
     } 
     //Generate JWT token

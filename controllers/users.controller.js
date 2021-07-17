@@ -92,7 +92,7 @@ const userDelete = async (req, res) => {
 
     res.status(200).json({
       msg: "success",
-      data: userDb,
+      data: userDb 
     });
 
   } catch (error) {

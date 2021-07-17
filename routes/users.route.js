@@ -10,6 +10,7 @@ const {
 } = require("../controllers/users.controller");
 const { isValidRole, isExistsEmail, isExistsUserById } = require("../helpers/db-validators");
 const { validateFields } = require("../middlewares/validate-fields");
+const { validateJWT } = require("../middlewares/validate-jwt");
 
 // no se ejecuta solo se pasa la referencia, para que el controlador lo ejecute
 router.get("/", userGet);
@@ -34,6 +35,7 @@ router.put("/:id",[
 ], userPut);
 
 router.delete("/:id",[
+  validateJWT,
   check('id', 'The Id is not valid').isMongoId(), 
   check('id').custom(isExistsUserById),
   validateFields //custom middlewares
