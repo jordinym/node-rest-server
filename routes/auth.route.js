@@ -1,7 +1,7 @@
 const express = require("express");
 const { check } = require("express-validator");
 
-const { login } = require("../controllers/auth.controller");
+const { login, googleSignIn } = require("../controllers/auth.controller");
 const { isExistsEmail } = require("../helpers/db-validators");
 const { validateFields } = require("../middlewares/validate-fields");
 
@@ -13,5 +13,10 @@ router.post("/login",[
     //check('email').custom(isExistsEmail), 
     validateFields //custom middlewares
   ], login);
+
+  router.post("/google",[
+    check('id_token', 'The id_token is required').notEmpty(),  
+    validateFields //custom middlewares
+  ], googleSignIn);
 
   module.exports = router;
