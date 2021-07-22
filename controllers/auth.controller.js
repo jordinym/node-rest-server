@@ -70,9 +70,7 @@ const googleSignIn = async (req, res) => {
     //Verify if user is active -> In DB
     if (!user.status) {
       return res.status(401).json({
-        msg: "Please contact the administrator, User blocked",
-        googleUser,
-        id_token,
+        msg: "Please contact the administrator, User blocked" 
       });
     }
 
