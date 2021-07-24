@@ -7,7 +7,7 @@ const getCategories = async (req, res) => {
         const queryFilter = { status: true };
         const [total, categories] = await Promise.all([
             Category.countDocuments(queryFilter),
-            Category.find(queryFilter).skip(Number(from)).limit(Number(limit)).populate('user'),
+            Category.find(queryFilter).skip(Number(from)).limit(Number(limit)).populate('user','name email'),
           ]);
       
           res.status(200).json({
@@ -28,7 +28,7 @@ const getCategoryById = async(req, res) => {
 
   try {
     const category = await Category.findById(id)
-                                    .populate('user');
+                                    .populate('user','name email');
 
     res.status(200).json({
       msg: "Success",
@@ -74,12 +74,11 @@ const updateCategory = async (req, res) => {
     const name= req.body.name.toUpperCase(); 
 
     try {
+
+      const queryFilter={ $and: [ {_id: { $ne: id}}, {name: { $eq: name}} ]};
+
       //En caso el id sea diferentre al que se le envia y el nombre sea igual al campo name
-        const categoryDb = await Category.findOne(
-          { $and: [ {_id: { $ne: id}},
-                    {name: { $eq: name}}
-                  ]
-          });  
+        const categoryDb = await Category.findOne(queryFilter);  
 
         if(categoryDb){
             return res.status(400).json({
@@ -92,7 +91,7 @@ const updateCategory = async (req, res) => {
           user: req.user.id
         }
 
-        const category = await Category.findOneAndUpdate(id,data,{returnOriginal:false}).populate('user');
+        const category = await Category.findOneAndUpdate(id,data,{returnOriginal:false});
        
         res.status(200).json({
             msg: "success",
@@ -108,7 +107,7 @@ const deleteCategory = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const category = await Category.findOneAndUpdate(id,{status:false},{returnOriginal:false}).populate('user');
+        const category = await Category.findOneAndUpdate(id,{status:false},{returnOriginal:false});
         
         res.status(200).json({
             msg: "success",

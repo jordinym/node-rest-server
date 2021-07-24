@@ -21,9 +21,14 @@ const categorySchema = new Schema({
 
 categorySchema.methods.toJSON = function(){
     const { __v:ctU,_id:categoryId,...category } = this.toObject();
-    const { __v:usU, password,_id:userId, ...user } = category.user;
+    
+    /**
+     * Si esque se formatea de esta forma siempre devolvera este objeto
+     * Por eso solo a nivel de controlador se especificara los campos en la funcion POPULATE
+     */
+    /*const { __v:usU, password,_id:userId, ...user } = category.user;
     user.uid=userId;
-    category.user=user;
+    category.user=user;*/
     category.uid=categoryId; 
     return category;
 };

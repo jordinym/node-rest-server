@@ -38,6 +38,9 @@ class Server {
 
     //CATEGORY Route
     this.app.use("/api/categories", require("../routes/categories.route"));
+
+    //PRODUCT Route
+    this.app.use("/api/products", require("../routes/products.route"));
   }
 
   listen() {

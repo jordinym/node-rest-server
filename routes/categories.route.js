@@ -7,7 +7,7 @@ const {
   deleteCategory,
   updateCategory,
 } = require("../controllers/categories.controller");
-const { isExistsId } = require("../helpers/db-validators");
+const { categoryIdExists } = require("../helpers/db-validators");
 const { validateJWT, validateFields } = require("../middlewares");
 
 const router = Router();
@@ -20,7 +20,7 @@ router.get("/", getCategories);
 router.get("/:id", 
 [
     check('id', 'The Id is not valid').isMongoId(), 
-    check("id").custom(isExistsId),
+    check("id").custom(categoryIdExists),
     validateFields
 ], getCategoryById);
 
@@ -34,7 +34,7 @@ router.post("/",
 router.put("/:id", 
 [
     check('id', 'The Id is not valid').isMongoId(), 
-    check("id").custom(isExistsId),
+    check("id").custom(categoryIdExists),
     check("name", "The name is required").notEmpty(),
     validateFields
 ], updateCategory);
@@ -42,7 +42,7 @@ router.put("/:id",
 router.delete("/:id",
 [
   check('id', 'The Id is not valid').isMongoId(), 
-  check("id").custom(isExistsId),
+  check("id").custom(categoryIdExists),
   validateFields
 ], deleteCategory);
 
