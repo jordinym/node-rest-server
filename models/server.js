@@ -41,6 +41,9 @@ class Server {
 
     //PRODUCT Route
     this.app.use("/api/products", require("../routes/products.route"));
+
+    //SEARCH Route
+    this.app.use("/api/search", require("../routes/search.route"));
   }
 
   listen() {
