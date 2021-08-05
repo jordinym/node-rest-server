@@ -1,5 +1,8 @@
 const path=require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2
+cloudinary.config(process.env.CLOUDINARY_URL);
+
 const { uploadFile } = require("../helpers/upload-file-validator");
 const { User, Product } = require("../models");
 
@@ -93,6 +96,75 @@ const updateImage = async (req, res) => {
 }
 };
 
+const updateImageCloudinary = async (req, res) => { 
+  const { id, collection } = req.params; 
+  let model;
+
+  try {
+    
+ 
+  switch (collection) {
+    case "users":
+      model = await User.findById(id);
+
+      if (!model) {
+        return res.status(400).json({
+          msg: `Not exists user with id ${id}`,
+        });
+      }
+      break;
+    case "products":
+      model = await Product.findById(id);
+
+      if (!model) {
+        return res.status(400).json({
+          msg: `Not exists product with id ${id}`,
+        });
+      }
+      break;
+    default:
+      return res.status(500).json({
+        msg: `I forgot to validate this`,
+      });
+  }
+
+  // Limpiar images previas 
+    if(model.image_id){
+      // hay que borrar la imagen del servidor
+      /* para evitar obtener el id publico de la imagen de la siguiente url
+      https://res.cloudinary.com/dqhmsqhiv/image/upload/v1628159473/nd9se8f6dzvmzarcqdil.jpg
+      SE ESTA ALMACENANDO EN LA BD
+
+      const nameArr=model.image.split('/'); 
+      const name=nameArr[nameArr.length-1];
+      const [public_id,extension]=name.split('.'); 
+      */
+   
+      cloudinary.uploader.destroy(model.image_id);
+    }
+
+    const {tempFilePath} = req.files.archivo;
+    //const response= await  cloudinary.uploader.upload(tempFilePath)
+   const {secure_url,public_id}= await  cloudinary.uploader.upload(tempFilePath)
+    
+    model.image_id = public_id; 
+    model.image = secure_url; 
+    await model.save();
+
+  res.json({
+    msg: "Success",
+    model,
+  });
+
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      msg: error,
+    });
+}
+};
+
+
 const showImage = async (req, res) => {
   const { id, collection } = req.params; 
 
@@ -151,5 +223,6 @@ const showImage = async (req, res) => {
 module.exports = {
   saveFile,
   updateImage,
-  showImage
+  showImage,
+  updateImageCloudinary
 };
