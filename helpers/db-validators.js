@@ -39,10 +39,24 @@ const productIdExists = async (id = "") => {
   }
 };
 
+/**
+ * aqui se pone el return true porque se esta enviando más de un parametro
+ * en los anteriores no era necesario porque de forma implicita si no cumplia la condición devolvia true
+ *  */ 
+const validCollections =(collection='', collections=[])=>{
+
+  if(!collections.includes(collection)){
+    throw new Error(`The collection ${collection} is not supported, ${collections}`);
+  }
+
+  return true;
+}
+
 module.exports = {
   isValidRole,
   isExistsEmail,
   isExistsUserById,
   categoryIdExists,
-  productIdExists
+  productIdExists,
+  validCollections
 };

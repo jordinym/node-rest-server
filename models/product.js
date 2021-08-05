@@ -25,7 +25,10 @@ const productSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref: 'User',
         required:true
-    }
+    },
+    description: { type: String },
+    available: { type: Boolean, defult: true },
+    image: { type: String},
 });
 
 productSchema.methods.toJSON = function(){
